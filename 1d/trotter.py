@@ -61,5 +61,7 @@ outDataFile=outPath+"/solutionTrotterA_rowNum"+str(A_rowNum)\
             +"dt_rowNum"+str(dt_rowNum)+"tMax"+str(tMax)+".txt"
 
 
-np.savetxt(outDataFile,psiValsAll,delimiter=",")
-
+# np.savetxt(outDataFile,psiValsAll,delimiter=",")
+with open(outDataFile,"w+") as fptr:
+    for number in psiValsAll:
+        fptr.write(f"{number.real:.18e}{number.imag:+.18e}j\n")

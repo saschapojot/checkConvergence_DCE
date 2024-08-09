@@ -14,11 +14,11 @@ A_nRow,_=A_inDf.shape
 dt_nRow,_=dt_inDf.shape
 
 
-print(dt_nRow)
+# print(dt_nRow)
 
 #exec CN
 for iA in range(0,A_nRow):
-    for idt in range(0,dt_nRow-2):
+    for idt in range(0,dt_nRow):
         print("executing CN ARow="+str(iA)+", dtRow="+str(idt))
         CNProcess=subprocess.Popen(["python3","./CN.py",str(iA),str(idt)],stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         while True:
