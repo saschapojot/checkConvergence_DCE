@@ -89,6 +89,7 @@ def plotDiff(dataFile,A_rowNumdt_rowNumtMax):
     exactSolution=np.array([analyticalSolution(AVal,tj) for tj in tValsAll])
     # print(exactSolution[:3])
     diff=np.abs(dataVec-exactSolution)
+    diffMax=np.max(diff)
     plt.figure()
     plt.plot(tValsAll,diff,color="blue",label="diff")
     plt.xlabel("$t$")
@@ -96,17 +97,29 @@ def plotDiff(dataFile,A_rowNumdt_rowNumtMax):
     plt.title("A="+str(AVal)+", dt="+str(format(dt, ".3e")))
     plt.savefig(dataPath+"/A_rowNum"+str(A_rowNum)+"dt_rowNum"+str(dt_rowNum)+"tMax"+str(tMax)+".png")
     plt.close()
+    return [A_rowNum,dt_rowNum,tMax,diffMax]
 
+CNDiffData=[]
 for n in range(0,len(CNFilesAll)):
     tPltStart=datetime.now()
     print("executing "+CNFilesAll[n])
-    plotDiff(CNFilesAll[n],CNRowPairs_tMaxAll[n])
+    oneDiff=plotDiff(CNFilesAll[n],CNRowPairs_tMaxAll[n])
     tPltEnd=datetime.now()
     print("plt time: ",tPltEnd-tPltStart)
+    CNDiffData.append(oneDiff)
+CNPath=os.path.dirname(CNFilesAll[0])
+CNDiffData=np.array(CNDiffData)
+np.savetxt("./CNDiffData.txt",CNDiffData)
 
+TrotterDiffData=[]
 for n in range(0,len(TrotterFilesAll)):
     tPltStart = datetime.now()
     print("executing " + TrotterFilesAll[n])
-    plotDiff(TrotterFilesAll[n],TrotterRowPairs_tmaxtAll[n])
+    oneDiff =plotDiff(TrotterFilesAll[n],TrotterRowPairs_tmaxtAll[n])
     tPltEnd = datetime.now()
     print("plt time: ", tPltEnd - tPltStart)
+    TrotterDiffData.append(oneDiff)
+
+TrotterPath=os.path.dirname(TrotterFilesAll[0])
+TrotterDiffData=np.array(TrotterDiffData)
+np.savetxt("./TrotterDiffData.txt",TrotterDiffData)
