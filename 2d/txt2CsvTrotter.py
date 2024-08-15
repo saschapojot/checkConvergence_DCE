@@ -6,12 +6,12 @@ file_path = 'TrotterDiffData.txt'  # Replace with the correct path if needed
 
 # Load the data into a DataFrame
 data = pd.read_csv(file_path, delim_whitespace=True, header=None)
-print(data)
+
 # Extract row indices, column indices, and data
 row_indices = data[0].astype(int)
 col_indices = data[1].astype(int)
 values = data[3]  # The fourth column contains the data you want in the CSV
-print(row_indices)
+
 # Determine the size of the matrix
 max_row = row_indices.max()
 max_col = col_indices.max()
@@ -25,7 +25,7 @@ for row, col, value in zip(row_indices, col_indices, values):
 
 # Convert the matrix to a DataFrame
 df = pd.DataFrame(matrix)
-# print(df)
+
 # Save the DataFrame to a CSV file
 output_csv_path = 'TrotterDiffData_matrix.csv'  # Replace with the desired output path
 df.to_csv(output_csv_path, index=False, header=False)
