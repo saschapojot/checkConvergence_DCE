@@ -2,8 +2,8 @@ import numpy as np
 from datetime import datetime
 from scipy.special import hermite
 from pathlib import Path
-from scipy.misc import derivative
-import numdifftools as nd
+# from scipy.misc import derivative
+# import numdifftools as nd
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -43,7 +43,7 @@ dx=2*L/N
 
 tTot=10
 
-Q=5000
+Q=10000
 dt=tTot/Q
 tValsAll=[0+dt*q for q in range(0,Q+1)]
 tValsAll=np.array(tValsAll)
@@ -120,7 +120,7 @@ tEvoStart=datetime.now()
 
 diffVec=[0]
 psiCurr=generate_psiExact_vec(0)
-for q in range(0,100):
+for q in range(0,Q):
     print("step "+str(q))
     psiNext=one_step_evo(q,psiCurr)
     psiCurr=psiNext
