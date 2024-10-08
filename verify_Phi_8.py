@@ -2,11 +2,22 @@ import numpy as np
 from datetime import datetime
 from scipy.special import hermite
 from pathlib import Path
-# from scipy.misc import derivative
-# import numdifftools as nd
-import matplotlib.pyplot as plt
 import pandas as pd
 
+
+##############################################################################
+#this part is copied from Phi_6
+
+#################################################################
+#this part is copied from Phi_4
+gamma1_3=1/(2-2**(1/3))
+gamma2_3=-2**(1/3)/(2-2**(1/3))
+gamma3_3=1/(2-2**(1/3))
+
+
+
+##########################################
+# copied from verify_Phi_S.py
 omegac=10
 def H(n,x):
     """
@@ -97,23 +108,66 @@ def Phi_S(h,psiVec):
     psi_vec3=U1_S(1/2*h,psi_vec2)
     return psi_vec3
 
-
-
-
-
-
-def one_step_evo_S(q,psiVec):
-    return Phi_S(dt,psiVec)
-
-
-
-
 def generate_psiExact_vec(q):
     tq=q*dt
     psiVec_exact=[psi_exact(x,tq) for x in xValsAll]
     psiVec_exact=np.array(psiVec_exact)
     psiVec_exact/=np.linalg.norm(psiVec_exact,ord=2)
     return psiVec_exact
+
+# copied from verify_Phi_S.py end
+##########################################
+
+
+def Phi_4(h,psiVec):
+    psi_vec1=Phi_S(gamma3_3*h,psiVec)
+
+    psi_vec2=Phi_S(gamma2_3*h,psi_vec1)
+
+    psi_vec3=Phi_S(gamma1_3*h,psi_vec2)
+
+    return psi_vec3
+
+
+# copied from verify_Phi_S.py end
+#################################################################
+
+gamma1_5=1/(2-2**(1/5))
+
+gamma2_5=-2**(1/5)/(2-2**(1/5))
+
+gamma3_5=1/(2-2**(1/5))
+
+def Phi_6(h,psiVec):
+    psi_vec1=Phi_4(gamma3_5*h,psiVec)
+
+    psi_vec2=Phi_4(gamma2_5*h,psi_vec1)
+
+    psi_vec3=Phi_4(gamma1_5*h,psi_vec2)
+
+    return psi_vec3
+
+
+
+
+
+##############################################################################
+
+
+gamma1_7=1/(2-2**(1/7))
+
+gamma2_7=-2**(1/7)/(2-2**(1/7))
+
+gamma3_7=1/(2-2**(1/7))
+
+def Phi_8(h,psiVec):
+    psi_vec1=Phi_6(gamma1_7*h,psiVec)
+
+    psi_vec2=Phi_6(gamma2_7*h,psi_vec1)
+
+    psi_vec3=Phi_6(gamma3_7*h,psi_vec2)
+
+    return psi_vec3
 
 
 tEvoStart=datetime.now()
@@ -122,44 +176,17 @@ diffVec=[0]
 psiCurr=generate_psiExact_vec(0)
 for q in range(0,Q):
     print("step "+str(q))
-    psiNext=one_step_evo_S(q,psiCurr)
-    psiCurr=psiNext
-    psi_analytical=generate_psiExact_vec(q+1)
-    diffTmp=np.linalg.norm(psiCurr-psi_analytical)
+    psiNext = Phi_8(dt,psiCurr)
+    psiCurr = psiNext
+    psi_analytical = generate_psiExact_vec(q + 1)
+    diffTmp = np.linalg.norm(psiCurr - psi_analytical)
     diffVec.append(diffTmp)
 
-print(diffVec)
+tEvoEnd = datetime.now()
+print("evo time: ", tEvoEnd - tEvoStart)
 
-tEvoEnd=datetime.now()
-print("evo time: ",tEvoEnd-tEvoStart)
-
-
-df_S=pd.DataFrame(diffVec)
-
-
+df_Phi_8=pd.DataFrame(diffVec)
 outDir="./diff/"
 Path(outDir).mkdir(exist_ok=True,parents=True)
-
-outCsv_S=outDir+"/diff_S.csv"
-df_S.to_csv(outCsv_S,index=False)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+outCsv_Phi_8=outDir+"/diff_Phi_8.csv"
+df_Phi_8.to_csv(outCsv_Phi_8,index=False)
