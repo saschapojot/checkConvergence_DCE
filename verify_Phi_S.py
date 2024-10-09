@@ -6,8 +6,12 @@ from pathlib import Path
 # import numdifftools as nd
 import matplotlib.pyplot as plt
 import pandas as pd
+import sys
 
-omegac=10
+if len(sys.argv)!=2:
+    print("wrong number of arguments")
+omegac=int(float(sys.argv[1]))
+
 def H(n,x):
     """
 
@@ -137,7 +141,7 @@ print("evo time: ",tEvoEnd-tEvoStart)
 df_S=pd.DataFrame(diffVec)
 
 
-outDir="./diff/"
+outDir="./diff/omegac"+str(omegac)+"/"
 Path(outDir).mkdir(exist_ok=True,parents=True)
 
 outCsv_S=outDir+"/diff_S.csv"

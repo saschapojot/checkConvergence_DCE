@@ -6,7 +6,7 @@ from pathlib import Path
 # import numdifftools as nd
 import matplotlib.pyplot as plt
 import pandas as pd
-
+import sys
 
 
 gamma1_3=1/(2-2**(1/3))
@@ -17,7 +17,9 @@ gamma3_3=1/(2-2**(1/3))
 
 ##########################################
 # copied from verify_Phi_S.py
-omegac=10
+if len(sys.argv)!=2:
+    print("wrong number of arguments")
+omegac=int(float(sys.argv[1]))
 def H(n,x):
     """
 
@@ -143,7 +145,7 @@ tEvoEnd=datetime.now()
 print("evo time: ",tEvoEnd-tEvoStart)
 
 df_Phi_4=pd.DataFrame(diffVec)
-outDir="./diff/"
+outDir="./diff/omegac"+str(omegac)+"/"
 Path(outDir).mkdir(exist_ok=True,parents=True)
 outCsv_Phi_4=outDir+"/diff_Phi_4.csv"
 df_Phi_4.to_csv(outCsv_Phi_4,index=False)

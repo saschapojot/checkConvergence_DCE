@@ -3,7 +3,7 @@ from datetime import datetime
 from scipy.special import hermite
 from pathlib import Path
 import pandas as pd
-
+import sys
 
 #################################################################
 #this part is copied from Phi_4
@@ -15,7 +15,9 @@ gamma3_3=1/(2-2**(1/3))
 
 ##########################################
 # copied from verify_Phi_S.py
-omegac=10
+if len(sys.argv)!=2:
+    print("wrong number of arguments")
+omegac=int(float(sys.argv[1]))
 def H(n,x):
     """
 
@@ -161,7 +163,7 @@ tEvoEnd=datetime.now()
 print("evo time: ",tEvoEnd-tEvoStart)
 
 df_Phi_6=pd.DataFrame(diffVec)
-outDir="./diff/"
+outDir="./diff/omegac"+str(omegac)+"/"
 Path(outDir).mkdir(exist_ok=True,parents=True)
 outCsv_Phi_6=outDir+"/diff_Phi_6.csv"
 df_Phi_6.to_csv(outCsv_Phi_6,index=False)
