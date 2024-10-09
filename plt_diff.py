@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 
-
-inDir="./diff/omegac10/"
+omegac=10
+inDir=f"./diff/omegac{omegac}/"
 
 inFile_Phi_S=inDir+"/diff_S.csv"
 
@@ -36,6 +36,7 @@ plt.plot(tValsAll,diff_Phi_S,label="Phi_S")
 plt.plot(tValsAll,diff_Phi_4,label="Phi_4")
 plt.plot(tValsAll,diff_Phi_6,label="Phi_6")
 plt.plot(tValsAll,diff_Phi_8,label="Phi_8")
+plt.title(r"$\omega_{c}=$"+str(omegac))
 plt.yscale("log")
 plt.legend(loc="best")
 plt.savefig(inDir+"/diff.png")
