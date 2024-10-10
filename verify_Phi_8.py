@@ -54,9 +54,9 @@ L=5
 N=2000
 dx=2*L/N
 
-tTot=10
+tTot=4
 
-Q=10000
+Q=int(1e5)
 dt=tTot/Q
 tValsAll=[0+dt*q for q in range(0,Q+1)]
 tValsAll=np.array(tValsAll)

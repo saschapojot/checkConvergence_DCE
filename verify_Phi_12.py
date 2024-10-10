@@ -2,13 +2,21 @@ import numpy as np
 from datetime import datetime
 from scipy.special import hermite
 from pathlib import Path
-# from scipy.misc import derivative
-# import numdifftools as nd
-import matplotlib.pyplot as plt
 import pandas as pd
 import sys
 
 
+
+###########################################################
+#this part is copied from Phi_10
+
+##############################################################################
+# this part is copied from Phi_8
+##############################################################################
+#this part is copied from Phi_6
+
+#################################################################
+#this part is copied from Phi_4
 gamma1_3=1/(2-2**(1/3))
 gamma2_3=-2**(1/3)/(2-2**(1/3))
 gamma3_3=1/(2-2**(1/3))
@@ -116,6 +124,8 @@ def generate_psiExact_vec(q):
     psiVec_exact=np.array(psiVec_exact)
     psiVec_exact/=np.linalg.norm(psiVec_exact,ord=2)
     return psiVec_exact
+
+# copied from verify_Phi_S.py end
 ##########################################
 
 
@@ -129,24 +139,103 @@ def Phi_4(h,psiVec):
     return psi_vec3
 
 
+# copied from verify_Phi_S.py end
+#################################################################
+
+gamma1_5=1/(2-2**(1/5))
+
+gamma2_5=-2**(1/5)/(2-2**(1/5))
+
+gamma3_5=1/(2-2**(1/5))
+
+def Phi_6(h,psiVec):
+    psi_vec1=Phi_4(gamma3_5*h,psiVec)
+
+    psi_vec2=Phi_4(gamma2_5*h,psi_vec1)
+
+    psi_vec3=Phi_4(gamma1_5*h,psi_vec2)
+
+    return psi_vec3
+
+
+
+
+
+##############################################################################
+
+
+gamma1_7=1/(2-2**(1/7))
+
+gamma2_7=-2**(1/7)/(2-2**(1/7))
+
+gamma3_7=1/(2-2**(1/7))
+
+def Phi_8(h,psiVec):
+    psi_vec1=Phi_6(gamma1_7*h,psiVec)
+
+    psi_vec2=Phi_6(gamma2_7*h,psi_vec1)
+
+    psi_vec3=Phi_6(gamma3_7*h,psi_vec2)
+
+    return psi_vec3
+
+
+
+#
+# copied from Phi_8 end
+##############################################################################
+
+gamma1_9=1/(2-2**(1/9))
+
+gamma2_9=-2**(1/9)/(2-2**(1/9))
+
+gamma3_9=1/(2-2**(1/9))
+
+def Phi_10(h,psiVec):
+    psi_vec1 =Phi_8(gamma1_9*h,psiVec)
+
+    psi_vec2 =Phi_8(gamma2_9*h,psi_vec1)
+
+    psi_vec3=Phi_8(gamma3_9*h,psi_vec2)
+
+    return psi_vec3
+
+
+# copied from Phi_10 end
+###########################################################
+
+gamma1_11=1/(2-2**(1/11))
+
+gamma2_11=-2**(1/11)/(2-2**(1/11))
+
+gamma3_11=1/(2-2**(1/11))
+
+def Phi_12(h,psiVec):
+    psi_vec1=Phi_10(gamma1_11*h,psiVec)
+
+    psi_vec2=Phi_10(gamma2_11*h,psi_vec1)
+
+    psi_vec3=Phi_10(psi_vec2,psi_vec2)
+
+    return psi_vec3
 
 tEvoStart=datetime.now()
-
 diffVec=[0]
 psiCurr=generate_psiExact_vec(0)
 for q in range(0,Q):
     print("step "+str(q))
-    psiNext =Phi_4(dt,psiCurr)
+    psiNext =Phi_12(dt,psiCurr)
     psiCurr = psiNext
     psi_analytical = generate_psiExact_vec(q + 1)
     diffTmp = np.linalg.norm(psiCurr - psi_analytical)
     diffVec.append(diffTmp)
 
-tEvoEnd=datetime.now()
-print("evo time: ",tEvoEnd-tEvoStart)
+tEvoEnd = datetime.now()
+print("evo time: ", tEvoEnd - tEvoStart)
 
-df_Phi_4=pd.DataFrame(diffVec)
+
+df_Phi_12=pd.DataFrame(diffVec)
 outDir="./diff/omegac"+str(omegac)+"/"
 Path(outDir).mkdir(exist_ok=True,parents=True)
-outCsv_Phi_4=outDir+"/diff_Phi_4.csv"
-df_Phi_4.to_csv(outCsv_Phi_4,index=False)
+outCsv_Phi_12=outDir+"/diff_Phi_12.csv"
+df_Phi_12.to_csv(outCsv_Phi_12,index=False)
