@@ -58,8 +58,8 @@ dx=2*L/N
 
 
 tTot=4
-
-Q=int(1e5)
+QStr="1e6"
+Q=int(float(QStr))
 dt=tTot/Q
 tValsAll=[0+dt*q for q in range(0,Q+1)]
 tValsAll=np.array(tValsAll)
@@ -210,7 +210,7 @@ tEvoEnd = datetime.now()
 print("evo time: ", tEvoEnd - tEvoStart)
 
 df_Phi_10=pd.DataFrame(diffVec)
-outDir="./diff/omegac"+str(omegac)+"/"
+outDir="./diff/Q"+str(QStr)+"/omegac"+str(omegac)+"/"
 Path(outDir).mkdir(exist_ok=True,parents=True)
 outCsv_Phi_10=outDir+"/diff_Phi_10.csv"
 df_Phi_10.to_csv(outCsv_Phi_10,index=False)

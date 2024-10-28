@@ -64,7 +64,8 @@ dx=2*L/N
 
 tTot=4
 
-Q=int(1e5)
+QStr="1e6"
+Q=int(float(QStr))
 dt=tTot/Q
 tValsAll=[0+dt*q for q in range(0,Q+1)]
 tValsAll=np.array(tValsAll)
@@ -82,6 +83,7 @@ def U1_S(Delta_t,psiVec):
     :param psiVec: psi vector in real space
     :return:
     """
+    # print("U1_S: Delta_t="+str(Delta_t))
     psi_hat_vec=np.fft.fft(psiVec,norm="ortho")
 
     k_space_evo_vec=-Delta_t*1j*1/2*kValsAll_squared
@@ -100,6 +102,7 @@ def U2_S(Delta_t,psiVec):
         :param psiVec: psi vector in real space
         :return:
         """
+    # print("U2_S: Delta_t="+str(Delta_t))
     x_vec_evo=-Delta_t*1j*1/2*omegac**2*xValsAll_squared
     psi_vec_after_evolution=np.exp(x_vec_evo)*psiVec
 
@@ -215,7 +218,7 @@ def Phi_12(h,psiVec):
 
     psi_vec2=Phi_10(gamma2_11*h,psi_vec1)
 
-    psi_vec3=Phi_10(psi_vec2,psi_vec2)
+    psi_vec3=Phi_10(gamma3_11*h,psi_vec2)
 
     return psi_vec3
 
@@ -235,7 +238,7 @@ print("evo time: ", tEvoEnd - tEvoStart)
 
 
 df_Phi_12=pd.DataFrame(diffVec)
-outDir="./diff/omegac"+str(omegac)+"/"
+outDir="./diff/Q"+str(QStr)+"/omegac"+str(omegac)+"/"
 Path(outDir).mkdir(exist_ok=True,parents=True)
 outCsv_Phi_12=outDir+"/diff_Phi_12.csv"
 df_Phi_12.to_csv(outCsv_Phi_12,index=False)
